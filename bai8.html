@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="text-align: center">
+    <label id="thongbao"></label> <br>
+    <input placeholder="The Name Student..." style="width: 300px" id="create" type="text">
+    <button onclick="updateName()" style="background-color: chartreuse">create</button>
+    <input id="search" placeholder="search..." style="width: 300px" type="text">
+    <button style="background-color: orange" onclick="searchTable()">search</button>
+</div>
+
+<table style="width: 100%" border="1">
+    <tr>
+        <th style="color: blue;border-color: blueviolet;border: 2px" COLSPAN="4">STUDENT MANAGE</th>
+    </tr>
+    <tr>
+        <th>STT</th>
+        <th>NAME</th>
+        <th>EDIT</th>
+        <th>DELETE</th>
+    </tr>
+    <tbody id="table">
+
+    </tbody>
+</table>
+<script>
+    let nameStudent = ['ngan', 'men']
+    let timKiem = []
+
+    function tableName() {
+        let name = ''
+        for (let i = 0; i < nameStudent.length; i++) {
+            name += `
+      <tr>
+      <td style="text-align: center">${i + 1}</td>
+      <td style="text-align: center">${nameStudent[i]}</td>
+      <td onclick="editName(${i})" style="text-align: center"><button style="background-color: blue; border-radius: 20%;color: white">edit</button></td>
+      <td style="text-align: center"><button onclick="deleteStudent(${i})" style="background-color: red; border-radius: 20%;color: white">delete</button></td>
+</tr>
+      `
+        }
+        document.getElementById('table').innerHTML = name
+    }
+
+    tableName();
+
+    function updateName() {
+        let newName = document.getElementById('create').value
+        if (newName.trim() === '') {
+            document.getElementById('thongbao').innerText = 'The name is required! Please try again!'
+        } else {
+            document.getElementById('thongbao').innerText = 'Create Student Success!'
+            nameStudent.push(newName)
+            tableName();
+        }
+    }
+
+    function editName(index) {
+        let newName = prompt('edit to name', nameStudent[index])
+        if (newName.trim() === '') {
+            document.getElementById('thongbao').innerText = 'chua viet gi kia!'
+        } else if (newName == nameStudent[index]) {
+            document.getElementById('thongbao').innerText = ' trung ten roi!Nhap lai de'
+        } else {
+            document.getElementById('thongbao').innerText = 'Sua thanh cong!'
+            nameStudent[index] = newName
+            tableName();
+        }
+    }
+
+    function deleteStudent(index) {
+        if (confirm('ban co muon xoa ten')) {
+            nameStudent.splice(index, 1)
+        }
+        tableName();
+    }
+
+    function searchTable() {
+        let searchName = document.getElementById('search').value
+        if (searchName.trim === '') {
+            tableName();
+        } else {
+            timKiem = []
+        }
+        for (let i = 0; i < nameStudent.length; i++) {
+            console.log(nameStudent[i].search(searchName))
+            let check = nameStudent[i].includes(searchName)
+            if (check){
+            // if (nameStudent[i].search(searchName) !== -1) {
+                timKiem.push(nameStudent[i])
+            }
+        }
+        showListSearch()
+    }
+    function showListSearch() {
+        let name = ''
+        for (let i = 0; i < timKiem.length; i++) {
+            name += `
+      <tr>
+      <td style="text-align: center">${i + 1}</td>
+      <td style="text-align: center">${timKiem[i]}</td>
+      <td onclick="editName('+i+')" style="text-align: center"><button style="background-color: blue; border-radius: 20%;color: white">edit</button></td>
+      <td style="text-align: center"><button onclick="deleteStudent('+i+')" style="background-color: red; border-radius: 20%;color: white">delete</button></td>
+</tr>
+      `}
+        document.getElementById('table').innerHTML = name
+    }
+</script>
+</body>
+</html>
